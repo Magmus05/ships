@@ -1,13 +1,13 @@
 {
   "files": {
     "main.css": "/ships/static/css/main.2e14f630.css",
-    "main.js": "/ships/static/js/main.906371f8.js",
+    "main.js": "/ships/static/js/main.6a9656b6.js",
     "index.html": "/ships/index.html",
     "main.2e14f630.css.map": "/ships/static/css/main.2e14f630.css.map",
-    "main.906371f8.js.map": "/ships/static/js/main.906371f8.js.map"
+    "main.6a9656b6.js.map": "/ships/static/js/main.6a9656b6.js.map"
   },
   "entrypoints": [
     "static/css/main.2e14f630.css",
-    "static/js/main.906371f8.js"
+    "static/js/main.6a9656b6.js"
   ]
 }

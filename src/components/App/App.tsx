@@ -20,6 +20,7 @@ function App() {
       })
       .catch((error: any) => console.error(error));
 
+
     }, []);
 
   function addFilms() {
@@ -56,8 +57,8 @@ function App() {
           <img src={headerLogo} alt="" />
           <label className="header__sort-text">Сортировать по:</label>
     
-          <select  className="header__sort-item select-css" onChange={(e)=>handleSortCard(e.target.value)} name="sort">
-          <option hidden selected disabled></option>
+          <select defaultValue="Нации" className="header__sort-item select-css" onChange={(e)=>handleSortCard(e.target.value)} name="sort">
+          <option hidden disabled></option>
             <option value="Нации">
               Нации
             </option>

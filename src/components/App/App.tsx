@@ -10,12 +10,13 @@ import { Iships } from "../../types/types";
 function App() {
   const [ships, setShips] = React.useState<Iships[]>([]); //
   const [shipsLimit, setShipsLimit] = React.useState<number>(12); //
-
+  const [isSubmited, setIsSubmited] = React.useState(false);
 
     React.useEffect(() => {
       getShips()
       .then((data: any) => {
         setShips(data.data.vehicles);
+        setIsSubmited(true)
       })
       .catch((error: any) => console.error(error));
 
@@ -69,7 +70,7 @@ function App() {
           </select>
         </div>
       </header>
-      <CardList ships={ships} shipsLimit={shipsLimit}></CardList>
+      <CardList isSubmited={isSubmited} ships={ships} shipsLimit={shipsLimit}></CardList>
       {shipsLimit >= ships.length ? null : <ButtonMore addFilms={addFilms} />}
       <footer className="footer">
         <div className="footer__container">

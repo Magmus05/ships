@@ -37,6 +37,11 @@ code {
   height: 61px;
   max-width: 100%;
   margin: 50px auto 0;
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 10;
 }
 .footer__container,
 .header__container {

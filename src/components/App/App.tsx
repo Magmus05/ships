@@ -2,7 +2,7 @@ import React from "react";
 import { getShips} from "../../utils/MainApi";
 import "./App.css";
 import CardList from "../CardList/CardList";
-import ButtonMore from "../ButtonMore/ButtonMore"
+
 import footerLogo from "../../images/logoLesta.png";
 import headerLogo from "../../images/headerLogoLesta.png";
 import { Iships } from "../../types/types";
@@ -71,8 +71,8 @@ function App() {
           </select>
         </div>
       </header>
-      <CardList isSubmited={isSubmited} ships={ships} shipsLimit={shipsLimit}></CardList>
-      {shipsLimit >= ships.length ? null : <ButtonMore addFilms={addFilms} />}
+      <CardList isSubmited={isSubmited} ships={ships} shipsLimit={shipsLimit} addFilms={addFilms} ></CardList>
+     
       <footer className="footer">
         <div className="footer__container">
           <img className="footer__logo" src={footerLogo} alt="" />

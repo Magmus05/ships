@@ -1,13 +1,13 @@
 {
   "files": {
-    "main.css": "/ships/static/css/main.681f913b.css",
-    "main.js": "/ships/static/js/main.19ed12fa.js",
+    "main.css": "/ships/static/css/main.2e14f630.css",
+    "main.js": "/ships/static/js/main.906371f8.js",
     "index.html": "/ships/index.html",
-    "main.681f913b.css.map": "/ships/static/css/main.681f913b.css.map",
-    "main.19ed12fa.js.map": "/ships/static/js/main.19ed12fa.js.map"
+    "main.2e14f630.css.map": "/ships/static/css/main.2e14f630.css.map",
+    "main.906371f8.js.map": "/ships/static/js/main.906371f8.js.map"
   },
   "entrypoints": [
-    "static/css/main.681f913b.css",
-    "static/js/main.19ed12fa.js"
+    "static/css/main.2e14f630.css",
+    "static/js/main.906371f8.js"
   ]
 }

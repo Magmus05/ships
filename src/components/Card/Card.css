@@ -1,8 +1,8 @@
 .card {
   box-sizing: border-box;
-
   box-shadow: 0px 4px 10px 0px rgba(0, 0, 0, 0.5);
   padding: 0 10px;
+  position: relative;
 }
 .card p {
   margin: 10px 0;
@@ -16,24 +16,30 @@
   overflow: hidden;
 }
 .card__title {
-}
-.card__class {
-  display: flex;
-  justify-content: center;
+  position: absolute;
+  top: 150px;
+  right: 10px;
 }
 .card__class-Image {
-  margin-left: 5px;
-  height: 27px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 50px;
 }
-.card__nation {
-  display: flex;
-  justify-content: center;
-}
+
 .card__nation-image {
-  margin-left: 10px;
-  height: 28px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: -1;
+  opacity: 0.5;
 }
 .card__level {
+  position: absolute;
+  top: 0;
+  left: 50px;
+  font-size: 20px;
 }
 .card__description {
   font-size: 14px;

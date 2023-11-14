@@ -1,78 +1,162 @@
 import React from "react";
-import { getShips} from "../../utils/MainApi";
+import { getShips } from "../../utils/MainApi";
 import "./App.css";
 import CardList from "../CardList/CardList";
-
+import Filters from "../Filters/Filters";
 import footerLogo from "../../images/logoLesta.png";
 import headerLogo from "../../images/headerLogoLesta.png";
 import { Iships } from "../../types/types";
+import { romanLevel } from "../../utils/Variables";
 
 function App() {
   const [ships, setShips] = React.useState<Iships[]>([]); //
+  const [selectedShips, setSelectedShips] = React.useState<Iships[]>([]);
   const [shipsLimit, setShipsLimit] = React.useState<number>(12); //
-  const [isSubmited, setIsSubmited] = React.useState(false);
+  const [isSubmited, setIsSubmited] = React.useState<boolean>(false);
+  const [shipClass, setShipClass] = React.useState<string[]>([]);
+  const [shipNation, setShipNation] = React.useState<string[]>([]);
+  const [shiplevel, setShiplevel] = React.useState<number[]>([]);
+  const [filtersClass, setFiltersClass] = React.useState<string[]>([]);
+  const [filtersNation, setFiltersNation] = React.useState<string[]>([]);
+  const [filtersLevel, setFiltersLevel] = React.useState<number[]>([]);
 
-    React.useEffect(() => {
-      getShips()
+  React.useEffect(() => {
+    getShips()
       .then((data: any) => {
         setShips(data.data.vehicles);
-        setIsSubmited(true)
+        setSelectedShips(data.data.vehicles);
+        data.data.vehicles.forEach((ship: Iships) => {
+          if (!shiplevel.includes(ship.level)) shiplevel.push(ship.level);
+          if (!shipClass.includes(ship.type.title))
+            shipClass.push(ship.type.title);
+          if (!shipNation.includes(ship.nation.title))
+            shipNation.push(ship.nation.title);
+        });
+        shiplevel.sort((a, b) => (a < b ? -1 : 1));
+        setIsSubmited(true);
       })
       .catch((error: any) => console.error(error));
-
-
-    }, []);
+    //eslint-disable-next-line
+  }, []);
 
   function addFilms() {
     console.log(shipsLimit);
-    setShipsLimit(shipsLimit + 12)
+    setShipsLimit(shipsLimit + 12);
   }
 
+  function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
+    setShipsLimit(12)
+    if (e.target.checked) {
+      if (e.target.name === "nation") filtersNation.push(e.target.value);
+      if (e.target.name === "class") filtersClass.push(e.target.value);
+      if (e.target.name === "level") {
+        filtersLevel.push(romanLevel.indexOf(e.target.value) + 1);
+      }
+    }
+    if (!e.target.checked) {
+      if (e.target.name === "nation")
+        filtersNation.splice(filtersNation.indexOf(e.target.value), 1);
+      if (e.target.name === "class")
+        filtersClass.splice(filtersClass.indexOf(e.target.value), 1);
+      if (e.target.name === "level")
+        filtersLevel.splice(
+          filtersLevel.indexOf(romanLevel.indexOf(e.target.value) + 1),
+          1
+        );
+    }
+    if (
+      filtersLevel.length === 0 &&
+      filtersClass.length === 0 &&
+      filtersNation.length === 0
+    ) {
+      setSelectedShips(ships);
+      return;
+    }
 
-  function handleSortCard (e: string) {
-
- if(e === "Уровню"){
-    ships.sort((ship1: Iships , ship2: Iships): any=> (ship1.level > ship2.level ? -1 : 1));
-    const sortShips: Iships[] = [...ships];
-  setShips(sortShips);
- }
-
- if(e === "Классу"){
-  ships.sort((ship1: Iships , ship2: Iships): any=> (ship1.type.name.localeCompare(ship2.type.name )));
-  const sortShips: Iships[] = [...ships];
-  setShips(sortShips)
- }
-
- if(e === "Нации"){
-  ships.sort((ship1: Iships , ship2: Iships): any=> (ship1.nation.name.localeCompare(ship2.nation.name)));
-  const sortShips: Iships[] = [...ships];
-  setShips(sortShips)
- }
+    let result: Iships[] = [];
+    if (filtersLevel.length !== 0) {
+      if (filtersClass.length !== 0) {
+        if (filtersNation.length !== 0) {
+          result = ships.filter(
+            (ship) =>
+              filtersLevel.includes(ship.level) &&
+              filtersClass.includes(ship.type.title) &&
+              filtersNation.includes(ship.nation.title)
+          );
+        } else {
+          result = ships.filter(
+            (ship) =>
+              filtersLevel.includes(ship.level) &&
+              filtersClass.includes(ship.type.title)
+          );
+        }
+      } else {
+        if (filtersNation.length !== 0) {
+          result = ships.filter(
+            (ship) =>
+              filtersLevel.includes(ship.level) &&
+              filtersNation.includes(ship.nation.title)
+          );
+        } else {
+          result = ships.filter((ship) => filtersLevel.includes(ship.level));
+        }
+      }
+    } else {
+      if (filtersClass.length !== 0) {
+        if (filtersNation.length !== 0) {
+          result = ships.filter(
+            (ship) =>
+              filtersClass.includes(ship.type.title) &&
+              filtersNation.includes(ship.nation.title)
+          );
+        } else {
+          result = ships.filter((ship) =>
+            filtersClass.includes(ship.type.title)
+          );
+        }
+      } else {
+        if (filtersNation.length !== 0) {
+          result = ships.filter((ship) =>
+            filtersNation.includes(ship.nation.title)
+          );
+        }
+      }
+    }
+    console.log(result);
+    setSelectedShips(result);
+  }
+  function handleReset(e: any) {
+    e.preventDefault();
+    e.target.form.reset();
+    setSelectedShips(ships);
+    setFiltersClass([]);
+    setFiltersNation([]);
+    setFiltersLevel([]);
+    setShipsLimit(12)
   }
 
-  return ( 
+  return (
     <div className="App">
       <header className="header">
         <div className="header__container">
           <img src={headerLogo} alt="" />
-          <label className="header__sort-text">Сортировать по:</label>
-    
-          <select defaultValue="Нации" className="header__sort-item select-css" onChange={(e)=>handleSortCard(e.target.value)} name="sort">
-          <option hidden disabled></option>
-            <option value="Нации">
-              Нации
-            </option>
-            <option value="Классу">
-              Классу
-            </option>
-            <option value="Уровню">
-              Уровню
-            </option>
-          </select>
         </div>
       </header>
-      <CardList isSubmited={isSubmited} ships={ships} shipsLimit={shipsLimit} addFilms={addFilms} ></CardList>
-     
+      <Filters
+        shipClass={shipClass}
+        shipNation={shipNation}
+        shiplevel={shiplevel}
+        handleChange={handleChange}
+        handleReset={handleReset}
+      ></Filters>
+      <CardList
+        isSubmited={isSubmited}
+        ships={ships}
+        shipsLimit={shipsLimit}
+        addFilms={addFilms}
+        selectedShips={selectedShips}
+      ></CardList>
+
       <footer className="footer">
         <div className="footer__container">
           <img className="footer__logo" src={footerLogo} alt="" />

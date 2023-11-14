@@ -9,23 +9,26 @@ interface CardListProps {
   shipsLimit: number;
   isSubmited: boolean;
   addFilms : () => void;
+  selectedShips: Iships[];
 }
-const CardList: FC<CardListProps> = ({ ships, shipsLimit, isSubmited, addFilms }) => {
+const CardList: FC<CardListProps> = ({ ships, shipsLimit, isSubmited, addFilms ,selectedShips }) => {
   return (
     <>
     <section className="cardList" aria-label="Карточки">
       {!isSubmited ? (
         <Preloader />
       ) : (
-        ships.map((ship, i) =>
+        selectedShips.length === 0 ? <h1 className="not-found">Нет совпадений</h1> :selectedShips.map((ship, i) =>
           i < shipsLimit ? <Card key={i} ship={ship}></Card> 
-          : null
-        )
+          : null)
       )}
     </section>
-         {shipsLimit >= ships.length ? null : isSubmited ? <ButtonMore addFilms={addFilms} />: null}
+         {shipsLimit >= ships.length || shipsLimit >= selectedShips.length? null : isSubmited ? <ButtonMore addFilms={addFilms} />: null}
          </>
   );
 };
 
 export default CardList;
+// selectedShips.length === 0 ? ships.map((ship, i) =>
+//           i < shipsLimit ? <Card key={i} ship={ship}></Card> 
+//           : null) :

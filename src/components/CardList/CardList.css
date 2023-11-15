@@ -8,8 +8,7 @@
   box-sizing: border-box;
 	justify-content: center;
   max-width: 1280px;
-  min-height: 85vh;
-
+  flex: 1 1 auto;
 }
 .not-found{
   margin-top: 50px;

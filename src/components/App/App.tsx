@@ -125,7 +125,7 @@ function App() {
     console.log(result);
     setSelectedShips(result);
   }
-  function handleReset(e: any) {
+  function handleReset(e: any): void {
     e.preventDefault();
     e.target.form.reset();
     setSelectedShips(ships);

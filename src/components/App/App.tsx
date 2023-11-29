@@ -20,6 +20,8 @@ function App() {
   const [filtersNation, setFiltersNation] = React.useState<string[]>([]);
   const [filtersLevel, setFiltersLevel] = React.useState<number[]>([]);
 
+
+
   React.useEffect(() => {
     getShips()
       .then((data: any) => {

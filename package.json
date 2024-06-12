@@ -9,7 +9,7 @@
     "@testing-library/user-event": "^13.5.0",
     "@types/jest": "^27.5.2",
     "@types/node": "^16.18.61",
-    "@types/react": "^18.2.37",
+    "@types/react": "^18.3.3",
     "@types/react-dom": "^18.2.15",
     "apollo-boost": "^0.4.9",
     "graphql-tag": "^2.12.6",

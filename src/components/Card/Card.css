@@ -3,6 +3,7 @@
   box-shadow: 0px 4px 10px 0px rgba(0, 0, 0, 0.5);
   padding: 0 10px;
   position: relative;
+  cursor: pointer;
 
 }
 .card p {
@@ -18,9 +19,11 @@
 }
 .card__title {
   position: absolute;
-  top: 170px;
+  bottom: 5px;
   right: 10px;
+
 }
+
 .card__class-Image {
   position: absolute;
   top: 0;
@@ -43,8 +46,16 @@
   font-size: 20px;
 }
 .card__description {
+  position: absolute;
+  top: 0;
+  left: 0;
   font-size: 14px;
-  margin: 15px 0 10px;
+  padding: 15px 0;
+  box-shadow: 0px 4px 10px 0px rgba(0, 0, 0, 0.5);
+  background-color: rgb(2, 34, 61);
+  width: 100%;
+  z-index: 100;
+  min-height: 100%;
 }
 
 .card:hover {

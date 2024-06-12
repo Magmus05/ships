@@ -1,65 +1,84 @@
 import React from "react";
-import { getShips } from "../../utils/MainApi";
+// import { getShips } from "../../utils/MainApi";
 import "./App.css";
 import CardList from "../CardList/CardList";
 import Filters from "../Filters/Filters";
 import footerLogo from "../../images/logoLesta.png";
 import headerLogo from "../../images/headerLogoLesta.png";
 import { Iships } from "../../types/types";
-import { romanLevel } from "../../utils/Variables";
+import { romanLevel, dataShip } from "../../utils/Variables";
 
 function App() {
   const [ships, setShips] = React.useState<Iships[]>([]); //
   const [selectedShips, setSelectedShips] = React.useState<Iships[]>([]);
   const [shipsLimit, setShipsLimit] = React.useState<number>(12); //
   const [isSubmited, setIsSubmited] = React.useState<boolean>(false);
-  const [shipClass, setShipClass] = React.useState<string[]>([]);
-  const [shipNation, setShipNation] = React.useState<string[]>([]);
-  const [shiplevel, setShiplevel] = React.useState<number[]>([]);
+  const [shipClass] = React.useState<string[]>([]);
+  const [shipNation] = React.useState<string[]>([]);
+  const [shiplevel] = React.useState<number[]>([]);
   const [filtersClass, setFiltersClass] = React.useState<string[]>([]);
   const [filtersNation, setFiltersNation] = React.useState<string[]>([]);
   const [filtersLevel, setFiltersLevel] = React.useState<number[]>([]);
 
-
-
   React.useEffect(() => {
-    getShips()
-      .then((data: any) => {
-        setShips(data.data.vehicles);
-        setSelectedShips(data.data.vehicles);
-        data.data.vehicles.forEach((ship: Iships) => {
-          if (!shiplevel.includes(ship.level)) shiplevel.push(ship.level);
-          if (!shipClass.includes(ship.type.title))
-            shipClass.push(ship.type.title);
-          if (!shipNation.includes(ship.nation.title))
-            shipNation.push(ship.nation.title);
-        });
-        shiplevel.sort((a, b) => (a < b ? -1 : 1));
-        setIsSubmited(true);
-      })
-      .catch((error: any) => console.error(error));
+    //данные с сервера
+
+    // getShips()
+    //   .then((data: any) => {
+    //     console.log(data.data.vehicles);
+
+    //     setShips(data.data.vehicles);
+    //     setSelectedShips(data.data.vehicles);
+    //     data.data.vehicles.forEach((ship: Iships) => {
+    //       if (!shiplevel.includes(ship.level)) shiplevel.push(ship.level);
+    //       if (!shipClass.includes(ship.type.name))
+    //         shipClass.push(ship.type.name);
+    //       if (!shipNation.includes(ship.nation.name))
+    //         shipNation.push(ship.nation.name);
+    //     });
+    //     shiplevel.sort((a, b) => (a < b ? -1 : 1));
+    //     setIsSubmited(true);
+    //   })
+    //   .catch((error: any) => console.error(error));
+
+
+    // локальные данные
+    setShips(dataShip);
+    setSelectedShips(dataShip);
+    dataShip.forEach((ship: Iships) => {
+      if (!shiplevel.includes(ship.level)) shiplevel.push(ship.level);
+      if (!shipClass.includes(ship.type.title)) shipClass.push(ship.type.title);
+      if (!shipNation.includes(ship.nation.title))
+        shipNation.push(ship.nation.title);
+    });
+    shiplevel.sort((a, b) => (a < b ? -1 : 1));
+    setIsSubmited(true);
+
     //eslint-disable-next-line
   }, []);
 
   function addFilms() {
-    console.log(shipsLimit);
     setShipsLimit(shipsLimit + 12);
   }
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
-    setShipsLimit(12)
+    setShipsLimit(12);
+
     if (e.target.checked) {
       if (e.target.name === "nation") filtersNation.push(e.target.value);
+
       if (e.target.name === "class") filtersClass.push(e.target.value);
-      if (e.target.name === "level") {
+
+      if (e.target.name === "level")
         filtersLevel.push(romanLevel.indexOf(e.target.value) + 1);
-      }
     }
     if (!e.target.checked) {
       if (e.target.name === "nation")
         filtersNation.splice(filtersNation.indexOf(e.target.value), 1);
+
       if (e.target.name === "class")
         filtersClass.splice(filtersClass.indexOf(e.target.value), 1);
+
       if (e.target.name === "level")
         filtersLevel.splice(
           filtersLevel.indexOf(romanLevel.indexOf(e.target.value) + 1),
@@ -75,66 +94,28 @@ function App() {
       return;
     }
 
-    let result: Iships[] = [];
-    if (filtersLevel.length !== 0) {
-      if (filtersClass.length !== 0) {
-        if (filtersNation.length !== 0) {
-          result = ships.filter(
-            (ship) =>
-              filtersLevel.includes(ship.level) &&
-              filtersClass.includes(ship.type.title) &&
-              filtersNation.includes(ship.nation.title)
-          );
-        } else {
-          result = ships.filter(
-            (ship) =>
-              filtersLevel.includes(ship.level) &&
-              filtersClass.includes(ship.type.title)
-          );
-        }
-      } else {
-        if (filtersNation.length !== 0) {
-          result = ships.filter(
-            (ship) =>
-              filtersLevel.includes(ship.level) &&
-              filtersNation.includes(ship.nation.title)
-          );
-        } else {
-          result = ships.filter((ship) => filtersLevel.includes(ship.level));
-        }
-      }
-    } else {
-      if (filtersClass.length !== 0) {
-        if (filtersNation.length !== 0) {
-          result = ships.filter(
-            (ship) =>
-              filtersClass.includes(ship.type.title) &&
-              filtersNation.includes(ship.nation.title)
-          );
-        } else {
-          result = ships.filter((ship) =>
-            filtersClass.includes(ship.type.title)
-          );
-        }
-      } else {
-        if (filtersNation.length !== 0) {
-          result = ships.filter((ship) =>
-            filtersNation.includes(ship.nation.title)
-          );
-        }
-      }
-    }
-    console.log(result);
+    let result: Iships[] = ships;
+    if (filtersLevel.length !== 0)
+      result = result.filter((ship) => filtersLevel.includes(ship.level));
+    if (filtersClass.length !== 0)
+      result = result.filter((ship) => filtersClass.includes(ship.type.title));
+    if (filtersNation.length !== 0)
+      result = result.filter((ship) =>
+        filtersNation.includes(ship.nation.title)
+      );
+
+
     setSelectedShips(result);
   }
-  function handleReset(e: any): void {
+  function handleReset(e: React.FormEvent<HTMLFormElement>): void {
+    const form = e.target as HTMLFormElement
     e.preventDefault();
-    e.target.form.reset();
+    form.reset();
     setSelectedShips(ships);
     setFiltersClass([]);
     setFiltersNation([]);
     setFiltersLevel([]);
-    setShipsLimit(12)
+    setShipsLimit(12);
   }
 
   return (
@@ -150,6 +131,9 @@ function App() {
         shiplevel={shiplevel}
         handleChange={handleChange}
         handleReset={handleReset}
+        filtersClass={filtersClass}
+        filtersNation={filtersNation}
+        filtersLevel={filtersLevel}
       ></Filters>
       <CardList
         isSubmited={isSubmited}

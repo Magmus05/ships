@@ -6,17 +6,17 @@ interface CardProps {
   ship: Iships;
 }
 function Card({ ship }: CardProps) {
-
+ const [showsDescription, setShowDescription] = React.useState(false)
 
   return (
 		<>
-    <article className="card">
+    <article className="card" onClick={()=>setShowDescription(!showsDescription)}>
       <img className="card__image" src={ship.icons.medium} alt={ship.title} />
       <h2 className="card__title">{ship.title}</h2>
 			<img className="card__class-Image" src={ship.type.icons.default} alt={ship.type.title} />
 			<img className="card__nation-image" src={ship.nation.icons.large} alt={ship.nation.title} />
 			<p className="card__level">{romanLevel[ship.level-1]}</p>
-			<div className="card__description"> {ship.description}</div>
+			{showsDescription && <div className='card__description'><h3>{ship.title}</h3> {ship.description}</div>}
     </article>
 		
 		</>
